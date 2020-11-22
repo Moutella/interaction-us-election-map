@@ -1,0 +1,42 @@
+body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  /* align-items: center; centralizar*/ 
+  background-color: rgb(21, 32, 43);
+  font-family: sans-serif;
+}
+
+.main-color{
+  color:#F7CEAD;
+}
+
+.div{
+  align-self: center;
+}
+
+main{
+  align-self: center;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+}
+
+.Input__wrapper {
+  color: #F7CEAD;
+  display: grid;
+
+  margin: 10px;
+}
+
+.Input__wrapper span {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.collapsible-body{
+  background-color: #f0f0f0;
+}
