@@ -8,7 +8,7 @@ $(document).ready(() => {
   var path = d3.geoPath() 
     .projection(projection);
 
-  var color = d3.scaleSequential(d3.interpolateRdBu);
+  var color = d3.scaleSequential(d3.interpolateRdBu).domain([0.4,0.6]);
 
   var svg = d3.select("#main")
     .append("svg")
@@ -26,7 +26,6 @@ $(document).ready(() => {
 
   d3.json("election-filtered.json").then( function(data) {
 
-    color.domain([0,1,2,3])
 
     d3.json("us-states.json").then( function (json) {
       console.log("teste");
