@@ -8,9 +8,7 @@ $(document).ready(() => {
   var path = d3.geoPath() 
     .projection(projection);
 
-  var color = d3.scaleLinear()
-  .domain([0.4,0.6])
-  .range(["rgb(0,0,0)","rgb(102,102,255)","rgb(255,102,102)","rgb(255,0,0)"]);
+  var color = d3.scaleSequential(d3.interpolateRdBu);
 
   var svg = d3.select("#main")
     .append("svg")
