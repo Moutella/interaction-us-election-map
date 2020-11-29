@@ -41,25 +41,24 @@ export class ElectionView {
     this.geography = geography
   }
   updateData(voting_data) {
-    console.log(this.geography)
     this.final_geo = this.geography
     this.final_geo.features.forEach(function (state, i) {
       let state_data = voting_data.find(data =>
         data.state == state.properties.name)
       if (state_data) {
         let trumpWins = state_data.trump_percentage > 0.5;
-        //state.properties.color = d3.scaleThreshold().domain([0.55, 0.45]).range(['blue', 'white', 'red'])(state_data.trump_percentage)
+        state.properties.color = d3.scaleLinear().domain([0.5, 1]).range(['#ff8880', '#ff0000'])(state_data.trump_percentage)
        
         state.properties.winner = trumpWins ? "Trump" : "Biden";
         if (trumpWins) {
           state.properties.percentual = (state_data.trump_percentage * 100).toFixed(2);
-          state.properties.color = 'red'
+          state.properties.color = d3.scaleLinear().domain([50, 75]).range(['#ff8880', '#ff0000'])(state.properties.percentual)
         } else {
           state.properties.percentual = ((1 - state_data.trump_percentage) * 100).toFixed(2);
-          state.properties.color = 'blue'
+          state.properties.color = d3.scaleLinear().domain([50, 75]).range(['#0088ff', '#0000ff'])(state.properties.percentual)
         }
 
-        state.properties.color = d3.scaleSequential(d3.interpolateRdBu).domain([0.505, 0.495])(state_data.trump_percentage)
+        //state.properties.color = d3.scaleSequential(d3.interpolateRdBu).domain([0.65, 0.35])(state_data.trump_percentage)
         state.properties.evs = state_data.electoral_votes
         state.properties.updateTimestamp = state_data.timestamp
       }
@@ -69,7 +68,6 @@ export class ElectionView {
   }
 
   render() {
-    console.log("hmm")
     var div = this.tooltips;
     var left = this.left
     var top = this.top
@@ -77,12 +75,11 @@ export class ElectionView {
       .data(this.final_geo.features)
       .join("path")
       .transition()
-      .duration(this.params.duration || 2000)
+      .duration(this.params.duration || 1000)
       .attr("d", this.path)
       .style("stroke", "#fff")
       .style("stroke-width", "1")
       .style("fill", function (d) {
-        console.log(d.properties.color)
         return d.properties.color
       })
     this.svg.selectAll("path")

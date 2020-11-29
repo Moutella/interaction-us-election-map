@@ -35,16 +35,13 @@ async function main() {
   }
   possibleTimes = Array.from(timestampSet)
   possibleTimes = possibleTimes.sort();
-  console.log(possibleTimes);
   electionView.updateData(voting_data);
 }
 
 main()
 jQuery("#slider-range").on("input", function () {
   let currentLimit = possibleTimes[$(this).val()]
-  console.log(currentLimit)
   let currentData = voting_data.filter(item =>
     item.timestamp <= currentLimit)
-  console.log(currentData.length);
   electionView.updateData(currentData)
 })
