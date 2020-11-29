@@ -63,6 +63,7 @@ async function main() {
     timestampSet.add(data['timestamp'].split(":")[0])
   }
   possibleTimes = Array.from(timestampSet)
+  jQuery("#slider-range").attr("max", possibleTimes.length-1)
   possibleTimes = possibleTimes.sort();
   electionView.updateData(voting_data);
   limitedData = voting_data
