@@ -105,14 +105,16 @@ export class BeautifulData {
       }
       this.data = data
       let yExtent = d3.extent(this.data, d => {
-        return (d.trump_percentage* 100).toFixed(2);
+        return parseFloat((d.trump_percentage* 100).toFixed(2));
       });
       let xExtent = d3.extent(this.data, d => {
         return new Date(d.timestamp);
       });
       this.x.domain(xExtent).nice();
-      yExtent[0] = 100- yExtent[1]
-      this.y.domain(yExtent).nice();
+      let maiorExtent = yExtent.reduce(function(a,b){
+        return Math.max(Math.abs(50-a),Math.abs(50-b))
+      });
+      this.y.domain([50-maiorExtent, 50+maiorExtent]).nice();
     }
 
     this.render();
