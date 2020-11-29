@@ -115,6 +115,7 @@ export class BeautifulData {
         return Math.max(Math.abs(50-a),Math.abs(50-b))
       });
       this.y.domain([50-maiorExtent, 50+maiorExtent]).nice();
+      //this.y.domain([0, 100]).nice();
     }
 
     this.render();
@@ -122,8 +123,8 @@ export class BeautifulData {
 
   render() {
 
-    this.yAxis.transition().duration(this.params.duration || 2000).call(d3.axisLeft(this.y))
-    this.xAxis.transition().duration(this.params.duration || 2000).call(d3.axisBottom(this.x).ticks(5))
+    this.yAxis.transition().duration(this.params.duration || 200).call(d3.axisLeft(this.y))
+    this.xAxis.transition().duration(this.params.duration || 200).call(d3.axisBottom(this.x).ticks(5))
     if (this.params.type == 'barchart') {
       this.margins.selectAll('rect')
         .data(this.bins)

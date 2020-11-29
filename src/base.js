@@ -29,14 +29,14 @@ let electionView = new ElectionView(params)
 let possibleTimes = null;
 let voting_data = null;
 let currentMapData = null;
-let currentState = "Alabama"
+let currentState = "Georgia"
 
 
 let linechart = new BeautifulData({
   selector: '#linechart',
   type: 'linechart',
   width: 400,
-  height: 400,
+  height: 300,
   position_x: 100,
   position_y: 100,
   top: 100,
@@ -46,7 +46,7 @@ let linechart = new BeautifulData({
   label_x: 'Data',
   label_y: 'Percentual',
   style: {
-    'background-color': '#ffaaaa',
+    'background-color': '#aaaaff',
   },
   extra: {
     stroke: '#ff0000'
@@ -99,5 +99,6 @@ function updateLinechart(state){
 jQuery('body').on('mapClick', function(event, data){
   currentState = event.detail
   updateLinechart(currentState);
+  jQuery("#current_state").text(currentState);
   
 });
