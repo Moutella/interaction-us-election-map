@@ -29,12 +29,12 @@ let electionView = new ElectionView(params)
 let possibleTimes = null;
 let voting_data = null;
 let currentMapData = null;
+let currentState = "Alabama"
 
 
-
-let bar_chart = new BeautifulData({
-  selector: '#barchart',
-  type: 'barchart',
+let linechart = new BeautifulData({
+  selector: '#linechart',
+  type: 'linechart',
   width: 400,
   height: 400,
   position_x: 100,
@@ -43,15 +43,13 @@ let bar_chart = new BeautifulData({
   bottom: 100,
   left: 100,
   right: 100,
-  label_x: 'Ano',
-  label_y: 'Pontuação',
+  label_x: 'Data',
+  label_y: 'Percentual',
   style: {
-    'background-color': 'beige',
-    'border': '.5rem solid #a0a0a0'
+    'background-color': '#ffaaaa',
   },
   extra: {
-    relative_thickness: 0.5,
-    fill: '#000000'
+    stroke: '#ff0000'
   }
 });
 
@@ -66,12 +64,12 @@ async function main() {
   }
   possibleTimes = Array.from(timestampSet)
   possibleTimes = possibleTimes.sort();
-  jQuery("#slider-range").attr('max', possibleTimes.length -1)
   electionView.updateData(voting_data);
   limitedData = voting_data
   currentMapData = electionView.getUsedData()
   let totals = electionView.getTotalEVs()
   updateTotals(totals.biden, totals.trump);
+  updateLinechart(currentState);
 }
 
 
@@ -80,6 +78,7 @@ function updateTotals(biden, trump){
   jQuery("#bidenScore").text(biden);
   jQuery("#trumpScore").text(trump);
 }
+
 main()
 let limitedData = null
 jQuery("#slider-range").on("input", function () {
@@ -90,13 +89,15 @@ jQuery("#slider-range").on("input", function () {
   currentMapData = electionView.getUsedData()
   let totals = electionView.getTotalEVs()
   updateTotals(totals.biden, totals.trump);
-  console.log(currentMapData)
+  updateLinechart(currentState);
 });
-
-jQuery('body').on('mapClick', function(event, data){
-  console.log("hmm");
-  console.log(event.detail);
+function updateLinechart(state){
   let stateData = limitedData.filter(item =>
-    item.state == event.detail)
-  console.log(stateData);
+    item.state == state)
+  linechart.updateData(stateData, true);
+}
+jQuery('body').on('mapClick', function(event, data){
+  currentState = event.detail
+  updateLinechart(currentState);
+  
 });

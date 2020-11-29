@@ -76,7 +76,7 @@ export class BeautifulData {
     }
   }
 
-  updateData(data, multi = null, extentY=null) {
+  updateData(data, multi = null, extentY = null) {
     if (this.params.type == 'barchart') {
       this.bins = data;
       let yExtent = d3.extent(this.bins, d => {
@@ -102,18 +102,17 @@ export class BeautifulData {
     } else if (this.params.type == 'linechart') {
       if (multi) {
         this.multi = true;
-      } else {
-        this.data = data
-        let yExtent = d3.extent(this.data, d => {
-          return d.y;
-        });
-        let xExtent = d3.extent(this.data, d => {
-          return d.x;
-        });
-        console.log(xExtent);
-        this.x.domain(xExtent).nice();
-        this.y.domain(yExtent).nice();
       }
+      this.data = data
+      let yExtent = d3.extent(this.data, d => {
+        return (d.trump_percentage* 100).toFixed(2);
+      });
+      let xExtent = d3.extent(this.data, d => {
+        return new Date(d.timestamp);
+      });
+      this.x.domain(xExtent).nice();
+      yExtent[0] = 100- yExtent[1]
+      this.y.domain(yExtent).nice();
     }
 
     this.render();
@@ -158,25 +157,48 @@ export class BeautifulData {
         .attr('r', d => d.r || 1)
         .attr('fill', d => d.fill || this.params.extra.fill || '#ffffff');
     } else if (this.params.type == 'linechart') {
-      let u = this.margins.selectAll(".lineTest")
+
+      let trumpLine = this.margins.selectAll(".lineTest1")
         .data([this.data], function (d) {
           return d.x
         });
-      // Updata the line
-      u
+      let bidenLine = this.margins.selectAll(".lineTest")
+        .data([this.data], function (d) {
+          return 1-d.x
+        });
+      trumpLine
+        .enter()
+        .append("path")
+        .attr("class", "lineTest1")
+        .merge(trumpLine)
+        .transition()
+        .duration(200)
+        .attr("fill", "none")
+        .attr("stroke", '#ff0000')
+        .attr("stroke-width", 2.5)
+        .attr("d", d3.line()
+          .x(d => this.x(new Date(d.timestamp)))
+          .y(d => {
+            return this.y(d.trump_percentage * 100).toFixed(2)
+          }))
+
+
+
+        bidenLine
         .enter()
         .append("path")
         .attr("class", "lineTest")
-        .merge(u)
+        .merge(bidenLine)
         .transition()
-        .duration(3000)
-        .attr("d", d3.line()
-          .x(d => this.x(d.x))
-          .y(d => this.y(d.y)))
+        .duration(200)
         .attr("fill", "none")
-        .attr("stroke", this.params.extra.stroke || '#ffffff')
+        .attr("stroke", '#0000ff')
         .attr("stroke-width", 2.5)
-
+        .attr("d", d3.line()
+          .x(d => this.x(new Date(d.timestamp)))
+          .y(d => {
+            return this.y((1-d.trump_percentage) * 100).toFixed(2)
+          }))
 
     }
 

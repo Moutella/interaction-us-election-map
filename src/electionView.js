@@ -122,7 +122,6 @@ export class ElectionView {
           .style("opacity", 0);
       })
       .on('click', function (event, data) {
-        console.log(data.properties.name);
         var event = new CustomEvent('mapClick', {
           'detail': data.properties.name
         });
