@@ -58,6 +58,8 @@ export class ElectionView {
           state.properties.percentual = ((1 - state_data.trump_percentage) * 100).toFixed(2);
           state.properties.color = 'blue'
         }
+
+        state.properties.color = d3.scaleSequential(d3.interpolateRdBu).domain([0.505, 0.495])(state_data.trump_percentage)
         state.properties.evs = state_data.electoral_votes
         state.properties.updateTimestamp = state_data.timestamp
       }
