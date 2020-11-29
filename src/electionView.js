@@ -75,7 +75,7 @@ export class ElectionView {
       .data(this.final_geo.features)
       .join("path")
       .transition()
-      .duration(this.params.duration || 500)
+      .duration(this.params.duration || 2000)
       .attr("d", this.path)
       .style("stroke", "#fff")
       .style("stroke-width", "1")
