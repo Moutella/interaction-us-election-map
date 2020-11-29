@@ -40,3 +40,12 @@ form {
 .collapsible-body{
   background-color: #f0f0f0;
 }
+
+#slider-range{
+  border: none;
+}
+.slider-col{
+  float: none !important;
+  margin-left: auto;
+  margin-right: auto;
+}

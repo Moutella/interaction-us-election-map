@@ -15,3 +15,17 @@ path:hover {
   pointer-events: none;
   white-space: pre-wrap;
 }
+
+.total_score{
+  text-align:center;
+  font-weight: bold;
+  font-size:2rem;
+}
+
+.bidenScore{
+  color:blue;
+}
+
+.trumpScore{
+  color:red;
+}

@@ -14,34 +14,37 @@
 
 
   <div>
-    <div class="row">
-      <div id="main" class="col s4" style="margin-left: 10%;"></div>
-      <div id="interactions" class="col s4" style="margin-left: 15%;">
-
-        <a id="reset_interactions" class="waves-effect waves-light btn"><i class="material-icons left">sync</i>RESET</a>
-        <ul class="collapsible">
-
-          <li>
-            <div class="collapsible-header">Controlar Tempo</div>
-            <div class="collapsible-body"><span>
-                <div class="Input__wrapper">
-                  <span>Linha do Tempo</span>
-                  <form action="#" style="width: 100%;">
-                    <p class="range-field" style="width: 100%;">
-                      <input autocomplete="off" type="range" id="slider-range" min="0" max="333" value="333" />
-                    </p>
-                  </form>
-
-                </div>
-              </span></div>
-          </li>
-
-        </ul>
-        <form>
-
-          <div class="Input__wrapper">
-          </div><br>
-        </form>
+    <div class="row col 12">
+      <div class="col s6">
+        <div class="total_score">
+          <span class="bidenScore">
+          Biden - 
+            <span id="bidenScore">
+              0
+            </span>
+          </span>
+          <span class="trumpScore">
+            <span id="trumpScore">
+              0
+            </span>
+            - Trump
+          </span>
+        </div>
+        <div id="us-map-div"></div>
+        <div id="interactions" class="col s8 center slider-col">
+          <span>Linha do Tempo</span>
+          <form action="#" style="width: 100%;">
+            <p class="range-field" style="width: 100%;">
+              <input autocomplete="off" type="range" id="slider-range" min="0" max="333" value="333" />
+            </p>
+          </form>
+        </div>
+      </div>
+      <div class="col s6">
+        <div id="main"></div>
+        <div id="interactions" class="col s8 center">
+          <div id="linechart" class="div"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -50,8 +53,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://d3js.org/d3.v6.min.js"></script>
-<script src="src/luxon.js"></script>
 <script type="module" src="src/electionView.js"></script>
+<script type="module" src="src/beautifulData.js"></script>
 <script type="module" src="src/base.js"></script>
 
 </html>

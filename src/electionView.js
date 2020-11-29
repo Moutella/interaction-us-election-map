@@ -5,6 +5,7 @@ export class ElectionView {
     this.params = params;
     this.svg = null;
     this.tooltips = null;
+    this.initialized = false;
 
 
     let projection = d3.geoAlbersUsa().scale(800);
@@ -42,20 +43,22 @@ export class ElectionView {
   }
   updateData(voting_data) {
     this.final_geo = this.geography
+    let totalTrump = 0
+    let totalBiden = 0
     this.final_geo.features.forEach(function (state, i) {
       let state_data = voting_data.find(data =>
         data.state == state.properties.name)
       if (state_data) {
         let trumpWins = state_data.trump_percentage > 0.5;
-        state.properties.color = d3.scaleLinear().domain([0.5, 1]).range(['#ff8880', '#ff0000'])(state_data.trump_percentage)
-       
         state.properties.winner = trumpWins ? "Trump" : "Biden";
         if (trumpWins) {
           state.properties.percentual = (state_data.trump_percentage * 100).toFixed(2);
-          state.properties.color = d3.scaleLinear().domain([50, 75]).range(['#ff8880', '#ff0000'])(state.properties.percentual)
+          state.properties.color = d3.scaleLinear().domain([50, 55]).range(['#ff8880', '#ff0000'])(state.properties.percentual)
+          totalTrump += parseInt(state_data.electoral_votes)
         } else {
           state.properties.percentual = ((1 - state_data.trump_percentage) * 100).toFixed(2);
-          state.properties.color = d3.scaleLinear().domain([50, 75]).range(['#0088ff', '#0000ff'])(state.properties.percentual)
+          state.properties.color = d3.scaleLinear().domain([50, 55]).range(['#0088ff', '#0000ff'])(state.properties.percentual)
+          totalBiden += parseInt(state_data.electoral_votes)
         }
 
         //state.properties.color = d3.scaleSequential(d3.interpolateRdBu).domain([0.65, 0.35])(state_data.trump_percentage)
@@ -64,18 +67,34 @@ export class ElectionView {
       }
 
     });
+    this.totalBiden = totalBiden;
+    this.totalTrump = totalTrump;
     this.render()
   }
-
+  getUsedData() {
+    return this.final_geo
+  }
+  getTotalEVs() {
+    return {
+      biden: this.totalBiden,
+      trump: this.totalTrump
+    }
+  }
   render() {
     var div = this.tooltips;
     var left = this.left
     var top = this.top
+
+    let duration = this.params.duration || 500
+    if (!this.initialized) {
+      duration = 0;
+      this.initialized = true;
+    }
     this.svg.selectAll("path")
       .data(this.final_geo.features)
       .join("path")
       .transition()
-      .duration(this.params.duration || 1000)
+      .duration(duration)
       .attr("d", this.path)
       .style("stroke", "#fff")
       .style("stroke-width", "1")
@@ -102,6 +121,14 @@ export class ElectionView {
           .duration(500)
           .style("opacity", 0);
       })
+      .on('click', function (event, data) {
+        console.log(data.properties.name);
+        var event = new CustomEvent('mapClick', {
+          'detail': data.properties.name
+        });
+        jQuery("body")[0].dispatchEvent(event);
+      })
+
 
   }
 
