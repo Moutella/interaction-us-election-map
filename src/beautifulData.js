@@ -47,7 +47,7 @@ export class BeautifulData {
 
     this.svg.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", this.params.left - 40)
+      .attr("y", this.params.left - 60)
       .attr("x", 0 - (this.params.height / 2 + this.params.top))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
