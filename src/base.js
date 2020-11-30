@@ -95,7 +95,7 @@ jQuery("#slider-range").on("input", function () {
 function updateLinechart(state){
   let stateData = limitedData.filter(item =>
     item.state == state)
-  linechart.updateData(stateData, true);
+  linechart.updateData(stateData.reverse(), true);
 }
 jQuery('body').on('mapClick', function(event, data){
   currentState = event.detail
