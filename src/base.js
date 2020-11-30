@@ -52,7 +52,7 @@ let linechart = new BeautifulData({
     stroke: '#ff0000'
   }
 });
-
+let currentDateLimit = null
 async function main() {
   let geographic_limits = await readJson('us-states.json')
   electionView.updateGeography(geographic_limits);
@@ -64,7 +64,11 @@ async function main() {
   }
   possibleTimes = Array.from(timestampSet)
   jQuery("#slider-range").attr("max", possibleTimes.length-1)
+
+  jQuery("#slider-range").attr("value", possibleTimes.length-1)
   possibleTimes = possibleTimes.sort();
+  currentDateLimit = possibleTimes[possibleTimes.length-1] + 'h'
+  jQuery("#current_date_limit").text(currentDateLimit);
   electionView.updateData(voting_data);
   limitedData = voting_data
   currentMapData = electionView.getUsedData()
@@ -86,6 +90,9 @@ jQuery("#slider-range").on("input", function () {
   let currentLimit = possibleTimes[$(this).val()]
   limitedData = voting_data.filter(item =>
     item.timestamp <= currentLimit)
+
+  
+  jQuery("#current_date_limit").text(currentLimit + 'h');
   electionView.updateData(limitedData)
   currentMapData = electionView.getUsedData()
   let totals = electionView.getTotalEVs()
